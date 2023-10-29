@@ -52,8 +52,11 @@ func main() {
     panic(err)
   }
 
-  // Copy res.Body into local
-  if _, err := io.Copy(localF, io.TeeReader(dec, &Counter{})); err != nil {
+  // Write `dec` into `&Counter{}` and return dec
+  Nreader := io.TeeReader(dec, &Counter{})
+
+  // Copy decompressed `resp.Body` into localF
+  if _, err := io.Copy(localF, Nreader); err != nil {
     panic(err)
   }
 }
